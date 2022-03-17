@@ -29,8 +29,8 @@ import { matches } from "../stores";
   }
 </script>
 
-<meta name="theme-color" media="(prefers-color-scheme: light)" content="#e2e8f0">
-<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#475569">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#9ca3af">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#334155">
 
 <div class="flex h-full flex-col">
   <div class="flex flex-row">
