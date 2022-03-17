@@ -29,6 +29,9 @@ import { matches } from "../stores";
   }
 </script>
 
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#e2e8f0">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#475569">
+
 <div class="flex h-full flex-col">
   <div class="flex flex-row">
     <a class="h-full w-64 bg-gray-200 border-gray-400 dark:bg-slate-600 border-4 dark:border-slate-700 xl:hover:bg-gray-300 active:bg-gray-400 xl:dark:hover:bg-slate-500 xl:dark:active:bg-slate-400 text-2xl dark:text-white inline-flex items-center justify-center" href="./">Back</a>

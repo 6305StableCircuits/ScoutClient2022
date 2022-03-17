@@ -432,6 +432,13 @@ import Modal from "./Modal.svelte";
     .catch(e => {console.log(e)})
   }
 </script>
+<svelte:head>
+  {#if cmode == "Autonomous"}
+  <meta name="theme-color" content="#3b82f6">
+  {:else}
+  <meta name="theme-color" content="#a855f7">
+  {/if}
+</svelte:head>
 {#if $modal=="climb"}
 <Modal>
   <p class="text-2xl text-center dark:text-white">Hang Attempt</p>
@@ -455,6 +462,7 @@ import Modal from "./Modal.svelte";
   <button class="w-full h-16 mt-5 text-2xl rounded bg-rose-300 border-4 border-rose-500 xl:hover:bg-rose-400 active:bg-rose-500" on:click={() => {modal.set("")}}>Cancel</button>
 </Modal>
 {/if}
+
 
 <div class="flex h-full flex-col items-center dark:bg-slate-700">
   <div class="flex flex-row w-full h-16 justify-center items-center {cmode === "Autonomous" ? "bg-blue-500" : "bg-purple-500"}">
