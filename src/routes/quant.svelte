@@ -210,13 +210,16 @@ import Modal from "./Modal.svelte";
   }
 
   function setIncap(undo=false, redo=false, num: number) {
+    if (!undo) {
+      lastAction = [...lastAction, `setIncap${incapacitatedTime}`];
+    }
+    else {
+      undone = [...undone, `setIncap${incapacitatedTime}`];
+    }
     incapacitatedTime = num;
     if (!redo && !undo) {
       modal.set("");
       undone = [];
-    }
-    if (!undo) {
-      lastAction = [...lastAction, `setIncap${num}`];
     }
   }
 
@@ -294,28 +297,22 @@ import Modal from "./Modal.svelte";
           undone = [...undone, `setClimb4`];
           break;
         case "setIncap90":
-          setIncap(true, false, -1);
-          undone = [...undone, `setIncap90`];
+          setIncap(true, false, 90);
           break;
         case "setIncap60":
-          setIncap(true, false, -1);
-          undone = [...undone, `setIncap60`];
+          setIncap(true, false, 60);
           break;
         case "setIncap30":
-          setIncap(true, false, -1);
-          undone = [...undone, `setIncap30`];
+          setIncap(true, false, 30);
           break;
         case "setIncap15":
-          setIncap(true, false, -1);
-          undone = [...undone, `setIncap15`];
+          setIncap(true, false, 15);
           break;
         case "setIncap0":
-          setIncap(true, false, -1);
-          undone = [...undone, `setIncap0`];
+          setIncap(true, false, 0);
           break;
         case "setIncap-1":
           setIncap(true, false, -1);
-          undone = [...undone, `setIncap-1`];
           break;
       }
       lastAction.pop();
