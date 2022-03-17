@@ -1,6 +1,6 @@
 {
-  "short_name": "ssteam",
-  "name": "StablescoutTeamApp",
+  "short_name": "Stablescout",
+  "name": "Stablescout Match Client",
   "start_url": "/",
   "icons": [
     {
@@ -58,5 +58,5 @@
   "display": "standalone",
   "scope": "/",
   "theme_color": "#3367D6",
-  "description": "Lofi to lofi beats, while using the scratchpad to list down tasks and thoughts"
+  "description": "The Scout client for Team 6305 for the 2022 season."
 }
