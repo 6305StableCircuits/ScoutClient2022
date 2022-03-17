@@ -52,11 +52,18 @@
       "src": "icons/512x512.png",
       "type": "image/png",
       "sizes": "512x512"
+    },
+    {
+      "src": "icons/maskable_icon_x512.png",
+      "type": "image/png",
+      "sizes":"512x512",
+      "purpose": "maskable"
     }
   ],
-  "background_color": "#3367D6",
+  "background_color": "#b9d9eb",
   "display": "standalone",
   "scope": "/",
-  "theme_color": "#3367D6",
-  "description": "The Scout client for Team 6305 for the 2022 season."
+  "theme_color": "#b9d9eb",
+  "description": "The Scout client for Team 6305 for the 2022 season.",
+  "orientation": "portrait"
 }
