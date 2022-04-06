@@ -420,6 +420,7 @@ import Modal from "./Modal.svelte";
     }
 
     const matchResult: Result = {
+      type: 'quant',
       id: id,
       matchNum: match,
       team: team,
@@ -507,7 +508,7 @@ import Modal from "./Modal.svelte";
   <div class="flex flex-row w-full my-8">
     <div class="w-6/12 flex items-center justify-center">
       {#if cmode == "Autonomous"}
-      <button class="w-3/4 h-16 text-2xl rounded {autoLeave ? 'bg-green-300 border-4 border-green-500 xl:hover:bg-green-400 active:bg-green-500' : 'bg-red-300 border-4 border-red-500 xl:hover:bg-red-400 active:bg-red-500'}" on:click={() => {toggleLeave()}}>Exited Hub</button>
+      <button class="w-3/4 h-16 text-2xl rounded {autoLeave ? 'bg-green-300 border-4 border-green-500 xl:hover:bg-green-400 active:bg-green-500' : 'bg-red-300 border-4 border-red-500 xl:hover:bg-red-400 active:bg-red-500'}" on:click={() => {toggleLeave()}}>Tarmac</button>
       {:else}
         {#if rung === -1}
         <button class="w-3/4 h-16 text-2xl rounded bg-fuchsia-300 border-4 border-fuchsia-500 xl:hover:bg-fuchsia-400 active:bg-fuchsia-500" on:click={() => {modal.set("climb")}}>Climb</button>

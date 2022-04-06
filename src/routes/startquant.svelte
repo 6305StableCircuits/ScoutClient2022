@@ -1,6 +1,7 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-import { matches } from "../stores";
+import { modal, names, quantAssignments } from "../stores";
+import Modal from "./Modal.svelte";
 
   let matchNum: number;
   let teamNum: number;
@@ -27,17 +28,44 @@ import { matches } from "../stores";
       return false;
     }
   }
+
+  function fillName(identifier: number, name: string) {
+    id=identifier;
+  }
 </script>
 
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#9ca3af">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#334155">
 
+{#if $modal == "matchNum"}
+<Modal>
+<h1 class="text-2xl text-white">Select a Match Number</h1>
+{#each Object.keys($quantAssignments) as assign}
+	<button class="w-full my-2 bg-gray-200 border-gray-400 dark:bg-slate-600 border-4 dark:border-slate-700 xl:hover:bg-gray-300 active:bg-gray-400 xl:dark:hover:bg-slate-500 xl:dark:active:bg-slate-400 text-2xl dark:text-white" on:click={() => {matchNum = parseInt(assign); modal.set("");}}>Match {assign}</button>
+{/each}
+
+</Modal>
+{/if}
+
+{#if $modal == "name"}
+<Modal>
+<h1 class="text-2xl text-white">Find a Name</h1>
+{#each Object.keys($quantAssignments[matchNum]) as nam}
+	<button class="w-full my-2 bg-gray-200 border-gray-400 dark:bg-slate-600 border-4 dark:border-slate-700 xl:hover:bg-gray-300 active:bg-gray-400 xl:dark:hover:bg-slate-500 xl:dark:active:bg-slate-400 text-2xl dark:text-white" on:click={}>{$names[nam]}</button>
+{/each}
+</Modal>
+{/if}
+
 <div class="flex h-full flex-col">
   <div class="flex flex-row">
-    <a class="h-full w-64 bg-gray-200 border-gray-400 dark:bg-slate-600 border-4 dark:border-slate-700 xl:hover:bg-gray-300 active:bg-gray-400 xl:dark:hover:bg-slate-500 xl:dark:active:bg-slate-400 text-2xl dark:text-white inline-flex items-center justify-center" href="./">Back</a>
+    <a class="h-full w-64 bg-gray-200 border-gray-400 dark:bg-slate-600 border-4 dark:border-slate-700 xl:hover:bg-gray-300 active:bg-gray-400 xl:dark:hover:bg-slate-500 xl:dark:active:bg-slate-400 text-2xl dark:text-white inline-flex items-center justify-center" href="./scout">Back</a>
     <div class="flex-col w-full bg-gray-200 border-gray-400 dark:bg-slate-600 border-4 dark:border-slate-700 dark:text-white focus-within:border-gray-500 dark:focus-within:border-slate-800 inline-flex">
+      {#if mode == "automatic" && Object.keys($quantAssignments).length == 0}
       <label for="matchNum" class="bg-inherit w-full text-center text-2xl cursor-text">Match Number</label>
-      <input id="matchNum" type="number" class="bg-inherit w-full text-xl text-center focus:outline-none" bind:value={matchNum}>
+      <input id="matchNum" type="number" class="bg-inherit w-full h-full text-xl text-center focus:outline-none" bind:value={matchNum}>
+      {:else}
+      <button class="bg-inherit w-full h-full text-xl text-center" on:click={() => {modal.set("matchNum")}}>{matchNum ? "Match " + matchNum : "Match Number"}</button>
+      {/if}
     </div>
     <div class="flex-col w-full bg-gray-200 border-gray-400 dark:bg-slate-600 border-4 dark:border-slate-700 dark:text-white focus-within:border-gray-500 dark:focus-within:border-slate-800 inline-flex">
       <label for="teamNum" class="bg-inherit w-full text-2xl text-center cursor-text">Team Number</label>
@@ -45,7 +73,7 @@ import { matches } from "../stores";
     </div>
   </div>
   <div class="flex flex-row h-full">
-    {#if Object.keys($matches).length == 0}
+    {#if Object.keys($quantAssignments).length == 0}
     <div class="flex-col w-full bg-gray-200 border-gray-400 dark:bg-slate-600 border-4 dark:border-slate-700 dark:text-white">
       <div class="w-full h-3/6 inline-flex flex-col justify-center items-center border-b-2 border-gray-400 dark:border-slate-700">
         <p class="bg-inherit w-full text-center text-2xl">Manual Override</p>
@@ -56,8 +84,13 @@ import { matches } from "../stores";
       </label>
     </div>
     {:else if mode == "automatic"}
-    <div class="flex-col w-full bg-gray-200 border-gray-400 dark:bg-slate-600 border-4 dark:border-slate-700 dark:text-white focus-within:border-gray-500 dark:focus-within:border-slate-800 inline-flex">
-      <label for="matchNum" class="bg-inherit w-full text-center cursor-text">Assigned Matches</label>
+    <div class="flex-col w-full bg-gray-200 border-gray-400 dark:bg-slate-600 border-4 dark:border-slate-700 dark:text-white">
+      <div class="w-full h-3/6 inline-flex flex-col justify-center items-center border-b-2 border-gray-400 dark:border-slate-700">
+        <p class="bg-inherit w-full text-center text-2xl">Assigned Matches</p>
+      </div>
+      <button for="name" class="w-full h-3/6 inline-flex flex-col justify-center items-center border-t-2 border-gray-400 dark:border-slate-700" on:click={() => {modal.set("name")}} disabled={typeof matchNum !== "number"}>
+        <p id="name" type="text" class="bg-inherit w-full text-xl text-center focus:outline-none dark:text-white">{name || (matchNum) ? "Select A Name" : "First Select Match Number"}</p>
+      </button>
     </div>
     {:else}
     <div class="flex-col w-full bg-gray-200 border-gray-400 dark:bg-slate-600 border-4 dark:border-slate-700 dark:text-white focus-within:border-gray-500 dark:focus-within:border-slate-800 inline-flex">

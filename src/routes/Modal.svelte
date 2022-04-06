@@ -1,6 +1,5 @@
 <script lang="ts">
   import { modal } from "../stores";
-  export let title = "Modal title goes here.."
 </script>
 
 <div class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex " on:click={() => {modal.set("")}}>

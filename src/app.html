@@ -6,6 +6,16 @@
 		<link rel="icon" href="%svelte.assets%/favicon.png" />
 		<link rel="manifest" crossorigin="use-credentials" href="manifest.json" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<noscript>
+			<style>
+				/**
+				* Reinstate scrolling for non-JS clients
+				*/
+				.simplebar-content-wrapper {
+					overflow: auto;
+				}
+			</style>
+		</noscript>		
 		%svelte.head%
 	</head>
 	<body class="dark:bg-slate-900 h-full">

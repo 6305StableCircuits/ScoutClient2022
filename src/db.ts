@@ -2,17 +2,6 @@
 import Dexie, { type Table } from 'dexie';
 import { indexedDB, IDBKeyRange } from "fake-indexeddb";
 
-export interface Competition {
-  id: number;
-  name: string;
-  active: number;
-}
-
-export interface Student {
-  id: number;
-  competitions: Array<number>;
-  
-}
 
 export interface Match {
   matchNum: number;
@@ -47,35 +36,39 @@ export interface QualitativeData {
 }
 
 export interface Assignment {
-  team?: number;
+  student: number;
+  team: number;
+  team2?: number;
+  team3?: number;
   matchNum: number;
   alliance: 'b' | 'r';
   type: 'quant' | 'qual';
 }
 
 export interface Result {
-  id: number,
+  type: 'quant' | 'qual';
+  id: number;
   matchNum: number;
   team: number;
   data: QualitativeData | QuantitativeData;
 }
 
+export interface Student {
+  id: number;
+  name: string;
+}
+
 export class Database extends Dexie {
-  // 'friends' is added by dexie when declaring the stores()
-  // We just tell the typing system this is the case
-  matches!: Table<Match>;
+  assignments!: Table<Assignment>;
   results!: Table<Result>;
 
-
   constructor() {
-    super('myDatabase');
-    this.version(1.2).stores({
-      matches: 'matchNum, competition, teams, students',
-      results: 'matchNum, team'
+    super('database');
+    this.version(2).stores({
+      assignments: '++rid, student, matchNum, type',
+      results: '++rid, matchNum, team',
     });
   }
 }
 
 export const db = new Database();
-
-console.log(db)

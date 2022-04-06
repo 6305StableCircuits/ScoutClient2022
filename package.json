@@ -37,6 +37,7 @@
   },
   "type": "module",
   "dependencies": {
-    "dexie": "^3.2.0"
+    "dexie": "^3.2.0",
+    "qr-scanner": "^1.4.1"
   }
 }
