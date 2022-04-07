@@ -7,21 +7,32 @@ import Modal from "./Modal.svelte";
   let teamNum: number;
   let alliance: "b" | "r" | "" = "";
   let name: string = "";
-  let mode: "manual" | "automatic" = "automatic";
+  let mode: "manual" | "automatic" = "manual";
   let id: number;
 
   let ready: boolean = false;
 
+  if (typeof window !== "undefined") {
+    if (Object.keys($quantAssignments).length !== 0) {
+      mode = "automatic";
+    }
+  }
+
   function setBlueAlliance() {
-    alliance = 'b';
+    if (mode !== "automatic") {
+      alliance = 'b';
+    }
   }
 
   function setRedAlliance() {
-    alliance = 'r';
+    if (mode !== "automatic") {
+      alliance = 'r';
+    }
   }
 
   function checkDisabled(alliance: "b" | "r" | "", name: string, matchNum: number, teamNum: number, id: number): boolean {
-    if (alliance === "" || name === "" || !matchNum || !teamNum || !id) {
+    console.log("test");
+    if (alliance === "" || name === "" || !matchNum || !teamNum || (id !== 0 && !id)) {
       return true;
     }
     else {
@@ -29,8 +40,21 @@ import Modal from "./Modal.svelte";
     }
   }
 
-  function fillName(identifier: number, name: string) {
-    id=identifier;
+  function fillName(identifier: number, nm: string) {
+    id = identifier;
+    name = nm;
+    teamNum = $quantAssignments[matchNum][identifier].team;
+    alliance = $quantAssignments[matchNum][identifier].alliance;
+    modal.set("");
+  }
+
+  function changeMatch(num: number) {
+    matchNum = num;
+    id = undefined;
+    name = "";
+    teamNum = undefined;
+    alliance = undefined;
+    modal.set("");
   }
 </script>
 
@@ -41,7 +65,7 @@ import Modal from "./Modal.svelte";
 <Modal>
 <h1 class="text-2xl text-white">Select a Match Number</h1>
 {#each Object.keys($quantAssignments) as assign}
-	<button class="w-full my-2 bg-gray-200 border-gray-400 dark:bg-slate-600 border-4 dark:border-slate-700 xl:hover:bg-gray-300 active:bg-gray-400 xl:dark:hover:bg-slate-500 xl:dark:active:bg-slate-400 text-2xl dark:text-white" on:click={() => {matchNum = parseInt(assign); modal.set("");}}>Match {assign}</button>
+	<button class="w-full my-2 bg-gray-200 border-gray-400 dark:bg-slate-600 border-4 dark:border-slate-700 xl:hover:bg-gray-300 active:bg-gray-400 xl:dark:hover:bg-slate-500 xl:dark:active:bg-slate-400 text-2xl dark:text-white" on:click={() => {changeMatch(parseInt(assign));}}>Match {assign}</button>
 {/each}
 
 </Modal>
@@ -51,7 +75,7 @@ import Modal from "./Modal.svelte";
 <Modal>
 <h1 class="text-2xl text-white">Find a Name</h1>
 {#each Object.keys($quantAssignments[matchNum]) as nam}
-	<button class="w-full my-2 bg-gray-200 border-gray-400 dark:bg-slate-600 border-4 dark:border-slate-700 xl:hover:bg-gray-300 active:bg-gray-400 xl:dark:hover:bg-slate-500 xl:dark:active:bg-slate-400 text-2xl dark:text-white" on:click={}>{$names[nam]}</button>
+	<button class="w-full my-2 bg-gray-200 border-gray-400 dark:bg-slate-600 border-4 dark:border-slate-700 xl:hover:bg-gray-300 active:bg-gray-400 xl:dark:hover:bg-slate-500 xl:dark:active:bg-slate-400 text-2xl dark:text-white" on:click={() => {fillName(parseInt(nam), $names[nam])}}>{$names[nam]}</button>
 {/each}
 </Modal>
 {/if}
@@ -69,15 +93,17 @@ import Modal from "./Modal.svelte";
     </div>
     <div class="flex-col w-full bg-gray-200 border-gray-400 dark:bg-slate-600 border-4 dark:border-slate-700 dark:text-white focus-within:border-gray-500 dark:focus-within:border-slate-800 inline-flex">
       <label for="teamNum" class="bg-inherit w-full text-2xl text-center cursor-text">Team Number</label>
-      <input id="teamNum" type="number" class="bg-inherit w-full text-xl text-center focus:outline-none" bind:value={teamNum}>
+      <input id="teamNum" type="number" class="bg-inherit w-full text-xl text-center focus:outline-none" bind:value={teamNum} disabled={(mode === "automatic") ? true : false}>
     </div>
   </div>
   <div class="flex flex-row h-full">
-    {#if Object.keys($quantAssignments).length == 0}
+    {#if mode == "manual"}
     <div class="flex-col w-full bg-gray-200 border-gray-400 dark:bg-slate-600 border-4 dark:border-slate-700 dark:text-white">
-      <div class="w-full h-3/6 inline-flex flex-col justify-center items-center border-b-2 border-gray-400 dark:border-slate-700">
+      <div class="w-full h-3/6 inline-flex flex-col justify-center items-center border-b-2 border-gray-400 dark:border-slate-700" on:click={() => {if (Object.keys($quantAssignments).length !== 0) {mode = "automatic"}}}>
         <p class="bg-inherit w-full text-center text-2xl">Manual Override</p>
+        {#if Object.keys($quantAssignments).length == 0}
         <p class="bg-inherit w-full text-center cursor-text">No Data Loaded</p>
+        {/if}
       </div>
       <label for="name" class="w-full h-3/6 inline-flex flex-col justify-center items-center border-t-2 border-gray-400 dark:border-slate-700 cursor-text">
         <input id="name" type="text" class="bg-inherit w-full text-xl text-center focus:outline-none dark:text-white" placeholder="Enter Your Name" bind:value={name}>
@@ -85,29 +111,25 @@ import Modal from "./Modal.svelte";
     </div>
     {:else if mode == "automatic"}
     <div class="flex-col w-full bg-gray-200 border-gray-400 dark:bg-slate-600 border-4 dark:border-slate-700 dark:text-white">
-      <div class="w-full h-3/6 inline-flex flex-col justify-center items-center border-b-2 border-gray-400 dark:border-slate-700">
+      <div class="w-full h-3/6 inline-flex flex-col justify-center items-center border-b-2 border-gray-400 dark:border-slate-700" on:click={() => {mode = "manual"}}>
         <p class="bg-inherit w-full text-center text-2xl">Assigned Matches</p>
       </div>
       <button for="name" class="w-full h-3/6 inline-flex flex-col justify-center items-center border-t-2 border-gray-400 dark:border-slate-700" on:click={() => {modal.set("name")}} disabled={typeof matchNum !== "number"}>
-        <p id="name" type="text" class="bg-inherit w-full text-xl text-center focus:outline-none dark:text-white">{name || (matchNum) ? "Select A Name" : "First Select Match Number"}</p>
+        <p id="name" type="text" class="bg-inherit w-full text-xl text-center focus:outline-none dark:text-white">{(name !== "") ? name : ((matchNum) ? "Select A Name" : "First Select Match Number")}</p>
       </button>
-    </div>
-    {:else}
-    <div class="flex-col w-full bg-gray-200 border-gray-400 dark:bg-slate-600 border-4 dark:border-slate-700 dark:text-white focus-within:border-gray-500 dark:focus-within:border-slate-800 inline-flex">
-      <label for="name" class="bg-inherit w-full text-center cursor-text">Manual Override</label>
     </div>
     {/if}
     <div class="flex-col w-full bg-gray-200 border-gray-400 dark:bg-slate-600 border-4 dark:border-slate-700 dark:text-white focus-within:border-gray-500 dark:focus-within:border-slate-800 inline-flex">
       <label for="matchNum" class="mb-16 xl:mb-4 bg-inherit w-full text-2xl text-center cursor-text">Alliance</label>
-      <div class="mx-auto w-3/4 h-2/6 xl:h-64 rounded border-8 mb-8 cursor-pointer {alliance == 'b' ? 'border-blue-500 bg-blue-400' : 'border-blue-400 bg-blue-400'}" on:click="{setBlueAlliance}"></div>
+      <button class="mx-auto w-3/4 h-2/6 xl:h-64 rounded border-8 mb-8 {alliance == 'b' ? 'border-blue-500 bg-blue-400' : 'border-blue-400 bg-blue-400'}" on:click={setBlueAlliance} disabled={(mode === "automatic") ? true : false}></button>
 
-      <div class="mx-auto w-3/4 h-2/6 xl:h-64 rounded border-8 cursor-pointer {alliance == 'r' ? 'border-red-500 bg-red-400' : 'border-red-400 bg-red-400'}" on:click="{setRedAlliance}"></div>
+      <button class="mx-auto w-3/4 h-2/6 xl:h-64 rounded border-8 {alliance == 'r' ? 'border-red-500 bg-red-400' : 'border-red-400 bg-red-400'}" on:click="{setRedAlliance}" disabled={(mode === "automatic") ? true : false}></button>
     </div>
   </div>
   <div class="flex flex-row h-24">
     <div class="flex-col w-full bg-gray-200 border-gray-400 dark:bg-slate-600 border-4 dark:border-slate-700 dark:text-white focus-within:border-gray-500 dark:focus-within:border-slate-800 inline-flex">
       <label for="scoutId" class="bg-inherit w-full text-center cursor-text text-2xl">Scout ID</label>
-      <input id="scoutId" type="number" class="bg-inherit w-full text-xl text-center focus:outline-none" bind:value={id} placeholder="##">
+      <input id="scoutId" type="number" class="bg-inherit w-full text-xl text-center focus:outline-none" bind:value={id} placeholder="##" disabled={(mode === "automatic") ? true : false}>
     </div>
     <button disabled={checkDisabled(alliance, name, matchNum, teamNum, id)} class="flex-col w-full h-full bg-gray-200 border-gray-400 dark:bg-slate-600 border-4 dark:border-slate-700 xl:hover:bg-gray-300 active:bg-gray-400 xl:dark:hover:bg-slate-500 xl:dark:active:bg-slate-400 text-2xl dark:text-white inline-flex items-center justify-center disabled:bg-gray-400 disabled:dark:bg-slate-700 disabled:hover:bg-gray-400 disabled:hover:dark:bg-slate-700 disabled:cursor-default" on:click={() => {goto(`/quant?match=${matchNum}&team=${teamNum}&alliance=${alliance}&id=${id}`)} }>
       <p class="">Proceed</p>

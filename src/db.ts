@@ -50,7 +50,7 @@ export interface Result {
   id: number;
   matchNum: number;
   team: number;
-  data: QualitativeData | QuantitativeData;
+  data: QuantitativeData;
 }
 
 export interface Student {

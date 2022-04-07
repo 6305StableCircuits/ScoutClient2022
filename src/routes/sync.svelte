@@ -11,7 +11,7 @@
 		const overlay = document.getElementById('scanOverlay');
 		const qrScanner = new QrScanner(
 			videoElem as HTMLVideoElement,
-			(result) => (),
+			(result) => {},
 			{ highlightScanRegion: true, highlightCodeOutline: true, returnDetailedScanResult: true }
 		);
 		qrScanner.start();

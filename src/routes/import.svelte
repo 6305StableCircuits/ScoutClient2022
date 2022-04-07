@@ -76,10 +76,9 @@ import { goto } from '$app/navigation';
 
 <div class="w-full h-full flex flex-col">
 	<div class="w-full flex flex-row h-16 bg-blue-500 items-center">
-		<a
-			href="./scan"
-			class="absolute translate-x-3 p-2 rounded text-white text-2xl hover:bg-blue-600">Back</a
-		>
+		<button
+			on:click={() => {qrScanner.stop(); goto('./scan');}}
+			class="absolute translate-x-3 p-2 rounded text-white text-2xl hover:bg-blue-600">Back</button>
 		<h1 class="mx-auto text-white text-2xl">Import Data</h1>
 	</div>
 	<!-- svelte-ignore a11y-media-has-caption -->
