@@ -44,5 +44,5 @@ export function formatAssignments(assignments: Array<Assignment>) {
 }
 
 export function compressResponse(result: Result) {
-  return `${result.id}	${result.matchNum}	${result.team}	${result.data.alliance}	${result.data.autoLeave ? 1 : 0}	${result.data.autoLow}	${result.data.autoHigh}	${result.data.teleopLow}	${result.data.rung}	${result.data.fouls}	${result.data.techFouls}	${result.data.incap}`
+  return `${result.id}	${result.matchNum}	${result.team}	${result.data.alliance}	${result.data.autoLeave ? 1 : 0}	${result.data.autoLow}	${result.data.autoHigh}	${result.data.teleopLow}	${result.data.teleopHigh}	${result.data.rung}	${result.data.fouls}	${result.data.techFouls}	${result.data.incap}`
 }
