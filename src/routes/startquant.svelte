@@ -84,7 +84,7 @@ import Modal from "./Modal.svelte";
   <div class="flex flex-row">
     <a class="h-full w-64 bg-gray-200 border-gray-400 dark:bg-slate-600 border-4 dark:border-slate-700 xl:hover:bg-gray-300 active:bg-gray-400 xl:dark:hover:bg-slate-500 xl:dark:active:bg-slate-400 text-2xl dark:text-white inline-flex items-center justify-center" href="./scout">Back</a>
     <div class="flex-col w-full bg-gray-200 border-gray-400 dark:bg-slate-600 border-4 dark:border-slate-700 dark:text-white focus-within:border-gray-500 dark:focus-within:border-slate-800 inline-flex">
-      {#if mode == "automatic" && Object.keys($quantAssignments).length == 0}
+      {#if mode == "manual"}
       <label for="matchNum" class="bg-inherit w-full text-center text-2xl cursor-text">Match Number</label>
       <input id="matchNum" type="number" class="bg-inherit w-full h-full text-xl text-center focus:outline-none" bind:value={matchNum}>
       {:else}
