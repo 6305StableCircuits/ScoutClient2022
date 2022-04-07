@@ -15,7 +15,7 @@ onMount(() => {
 	if (typeof window !== 'undefined') {
 		let canvas = document.getElementById("output");
 	  db.results.each((r) => {
-  	  scouted += compressResponse(r) + "|"
+  	  scouted += compressResponse(r) + "\n"
 	  }).then(() => {
   	  scouted = scouted.substring(0,scouted.length-1);
 			QRCode.toCanvas(canvas, scouted, {scale:5});

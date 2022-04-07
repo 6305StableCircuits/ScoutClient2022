@@ -63,8 +63,8 @@ export class Database extends Dexie {
   results!: Table<Result>;
 
   constructor() {
-    super('database');
-    this.version(2).stores({
+    super('clidb');
+    this.version(1).stores({
       assignments: '++rid, student, matchNum, type',
       results: '++rid, matchNum, team',
     });
