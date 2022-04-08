@@ -18,7 +18,7 @@ onMount(() => {
   	  scouted += compressResponse(r) + "\n"
 	  }).then(() => {
   	  scouted = scouted.substring(0,scouted.length-1);
-			QRCode.toCanvas(canvas, scouted, {scale:5});
+			QRCode.toCanvas(canvas, scouted, {scale:5, width: (window.innerWidth < window.innerHeight) ? window.innerWidth*0.5 : window.innerHeight*0.5});
   	})
 	}
 })
